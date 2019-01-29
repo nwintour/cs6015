@@ -1,7 +1,7 @@
 all: main
 
-assignment3: main.cpp
-	gcc-c++ -O main.cpp -o main
+main: main.cpp
+	clang++ -O main.cpp -std=c++11 -o main
 
 test: main
 	./test.sh
