@@ -13,24 +13,23 @@
 #include <sstream>
 #include <cmath>
 #include <cstring>
-#include "TestCases.hpp"
 
 using namespace std;
 
-//vector<string> readFile(ifstream& in) {
-//    vector<string> fileLines;
-//    string line;
-//    while(in >> line){
-//        // cout << line;
-//        fileLines.push_back(line);
-//        getline(in, line);
-//        // cout << line;
-//        fileLines.push_back(line);
-//        // cout << line;
-//    }
-//    // auto it = fileLines.insert(fileLines.begin(), 2, "0");
-//    return fileLines;
-//}
+vector<string> readFile(ifstream& in) {
+    vector<string> fileLines;
+    string line;
+    while(in >> line){
+        // cout << line;
+        fileLines.push_back(line);
+        getline(in, line);
+        // cout << line;
+        fileLines.push_back(line);
+        // cout << line;
+    }
+    // auto it = fileLines.insert(fileLines.begin(), 2, "0");
+    return fileLines;
+}
 
 vector<string> splitVector(vector<string> in) {
     vector<string> result;
@@ -243,7 +242,7 @@ void printShapes(vector<string> s) {
     
     vector<string> splitBySpace = splitVector(s);
     
-    vector<string> shape;
+     // shape;
     
     for(int i = 0; i < splitBySpace.size() ; i+= 6) {
         
@@ -253,7 +252,14 @@ void printShapes(vector<string> s) {
         
         // cout << i << endl;
         
-        shape = {splitBySpace.at(i), splitBySpace.at(i+1), splitBySpace.at(i+2), splitBySpace.at(i+3), splitBySpace.at(i+4), splitBySpace.at(i+5)};
+        vector<string> shape;
+        shape.push_back(splitBySpace.at(i));
+        shape.push_back(splitBySpace.at(i+1));
+        shape.push_back(splitBySpace.at(i+2));
+        shape.push_back(splitBySpace.at(i+3));
+        shape.push_back(splitBySpace.at(i+4));
+        shape.push_back(splitBySpace.at(i+5));
+//        = {splitBySpace.at(i), splitBySpace.at(i+1), splitBySpace.at(i+2), splitBySpace.at(i+3), splitBySpace.at(i+4), splitBySpace.at(i+5)};
         
         // printVector(shape);
         
@@ -291,25 +297,18 @@ void printShapes(vector<string> s) {
 
 int main(int argc, const char * argv[]) {
     
-    // test from files
-    vector<vector<string>> testFiles = test();
-    
-    for(int i =0; i < 6; ++i) {
-        printShapes(testFiles.at(i));
-    }
-    
 //    while(!cin.eof()) {
 //         ifstream in("testfile.txt");
 //    }
     
-   //  ifstream in("randomSquares.txt");
+     // ifstream in("randomSquares.txt");
     // ifstream in("randomRhombi.txt");
     // ifstream in("randomKites.txt");
-    // ifstream in("randomQuadrilaterals.txt");
+     ifstream in("randomQuadrilaterals.txt");
     // ifstream in("randomTrapezoids.txt");
 //     ifstream in("randomParallelograms.txt");
 //
-    // vector<string> inFile = readFile(in);
+    vector<string> inFile = readFile(in);
 //
 //    vector<string> inFile;
 //        string line;
@@ -319,6 +318,6 @@ int main(int argc, const char * argv[]) {
 //        inFile.push_back(line);
 //    }
 
-   // printShapes(inFile);
-    // void testSquare();
+    printShapes(inFile);
+    
 }
