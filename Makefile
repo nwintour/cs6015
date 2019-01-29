@@ -1,9 +1,9 @@
-all: main
+all: assignment3
 
-main: main.cpp
-	clang++ -O main.cpp -std=c++11 -o main
+assignment3: main.cpp
+	clang++ -std=c++11 main.cpp -o main
 
-test: main
+test: assignment3
 	./test.sh
 
 clean:
