@@ -1,3 +1,3 @@
 sudo: required
 language: cpp
-os: osx_image: xcode10.1
+script: make
