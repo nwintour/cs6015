@@ -11,7 +11,7 @@ configure:
 
 coverage:
 	clang++ -fprofile-instr-generate -fcoverage-mapping main.cpp -o main
-	LLVM_PROFILE_FILE="main.profraw" ./main < coverage.txt
+	LLVM_PROFILE_FILE="main.profraw" ./main << coverage.txt
 	xrun llvm-profdata merge -sparse main.profraw -o main.profdata
 	xrun llvm-cov show ./main -instr-profile=main.profdata
 
