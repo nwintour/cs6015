@@ -16,6 +16,7 @@ coverage:
 	xrun llvm-cov show ./main -instr-profile=main.profdata
 
 fuzzer:
+	for run in {1..1000}; do ./numberGenerator.sh; done
 
 test: all
 	./test.sh
