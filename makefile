@@ -9,7 +9,7 @@ make: all
 configure: all
 	./configure
 
-test: assignment3
+test: all
 	./test.sh
 
 clean:
