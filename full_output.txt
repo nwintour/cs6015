@@ -829,4 +829,3 @@ parallelogram
 parallelogram
 parallelogram
 parallelogram
-Extra
