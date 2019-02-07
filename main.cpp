@@ -118,7 +118,7 @@ vector<string> splitVector(vector<string> in) {
     return result;
 }
 
-vector<string> readFile(ifstream& in) {
+vector<string> readFile(istream& in) {
     vector<string> fileLines;
     string line;
     while(!in.eof()){
@@ -349,7 +349,7 @@ void printShapes(vector<Shape> &all) {
     for(Shape s: all) {
         if(s.error != "") {
             cout << s.error << endl;
-           // EXIT_FAILURE;
+            EXIT_FAILURE;
         } else {
             if (isSquare(s) == true) {
                 cout << "square" << endl;
@@ -374,37 +374,18 @@ void printShapes(vector<Shape> &all) {
 ////////////////////////////////////////////////////////////////////// main
 
 int main(int argc, const char * argv[]) {
-    
-
-    // this is tested
-    ifstream in (argv[1]);
-    ofstream out(argv[2]);
-    cout.rdbuf(out.rdbuf());
-
-  //  ifstream in ("testBasic.txt");
-  //  ifstream in ("testgen.txt");
-
-//      ifstream in ("randomSquares.txt");
-  // ifstream in("randomRhombi.txt");
- //  ifstream in("randomKites.txt");
-  // ifstream in("randomQuadrilaterals.txt");
-//    ifstream in("randomTrapezoids.txt");
-//    ifstream in("randomParallelograms.txt");
-
-//    string test = "16 33 49 49 33 16";
-//    cout <<  numberPoints(test) << endl;
-//    vector<string> test2 = splitString(test);
-//    for(string c: test2) {
-//        cout << c << endl;
-//    }
-//    cout << outOfRange(test2);
-    
-    vector<string> inFile = readFile(in);
+//    ofstream out (argv[2]);
+//    cout.rdbuf(out.rdbuf());
+    //  ifstream in ("testBasic.txt");
+    //  ifstream in ("testgen.txt");
+    //  ifstream in ("randomSquares.txt");
+    //  ifstream in("randomRhombi.txt");
+    //  ifstream in("randomKites.txt");
+    //  ifstream in("randomQuadrilaterals.txt");
+    //  ifstream in("randomTrapezoids.txt");
+    //  ifstream in("randomParallelograms.txt");
+    vector<string> inFile = readFile(std::cin);
     vector<string> splitBySpace = splitVector(inFile);
-   // cout << "size before split: " << inFile.size() << endl;
-  //  printVector(splitBySpace);
-  //  cout << "size after split: " << splitBySpace.size() << endl;
     vector<Shape> allShapes = makeShapeVector(splitBySpace);
     printShapes(allShapes);
-//    out.close();
 }
