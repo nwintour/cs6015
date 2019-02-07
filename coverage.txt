@@ -1,0 +1,392 @@
+    1|       |//
+    2|       |//  main.cpp
+    3|       |//  assignment3
+    4|       |//
+    5|       |//  Created by Natalie Wintour on 1/17/19.
+    6|       |//  Copyright © 2019 Natalie Wintour. All rights reserved.
+    7|       |//
+    8|       |
+    9|       |#include <iostream>
+   10|       |#include <fstream>
+   11|       |#include <string>
+   12|       |#include <vector>
+   13|       |#include <sstream>
+   14|       |#include <cmath>
+   15|       |#include <cstring>
+   16|       |
+   17|       |using namespace std;
+   18|       |
+   19|       |struct Shape {
+   20|       |    string error;
+   21|       |    vector<double> points;
+   22|       |    vector<double> sides;
+   23|       |    vector<double> slopes;
+   24|       |};
+   25|       |
+   26|  1.66k|vector<string> splitString(string s) {
+   27|  1.66k|    vector<string> result;
+   28|  1.66k|    istringstream iss(s);
+   29|  11.6k|    for(string s; iss >> s; ) {
+   30|  9.97k|        result.push_back(s);
+   31|  9.97k|        // cout << s << endl;
+   32|  9.97k|    }
+   33|  1.66k|    return result;
+   34|  1.66k|}
+   35|       |
+   36|    831|bool numberPoints(string line) {
+   37|    831|    vector<string> result = splitString(line);
+   38|    831|    if(result.size() != 6) {
+   39|      0|        return false;
+   40|    831|    } else {
+   41|    831|        return true;
+   42|    831|    }
+   43|    831|}
+   44|       |
+   45|    831|bool containsLetterOrSymbol(string line) {
+   46|  14.4k|    for(char c: line) {
+   47|  14.4k|        if(ispunct(c) || isalpha(c)) {
+   48|      0|            return true;
+   49|      0|        }
+   50|  14.4k|    }
+   51|    831|    return false;
+   52|    831|}
+   53|       |
+   54|    831|bool outOfRange(vector<string> points) {
+   55|  4.98k|    for(string s: points) {
+   56|  4.98k|        int i = stoi(s);
+   57|  4.98k|        if(i > 100 || i < 0) {
+   58|      0|            return true;
+   59|      0|        }
+   60|  4.98k|    }
+   61|    831|    return false;
+   62|    831|}
+   63|       |
+   64|      0|void validateError2(Shape s) { // check for duplicate points
+   65|      0|    double array[10];
+   66|      0|    ::copy(s.points.begin(), s.points.end(), array);
+   67|      0|    if(s.points.at(0) == s.points.at(3) || s.points.at(0) == s.points.at(6) || s.points.at(0) == s.points.at(9)) {
+   68|      0|        if(s.points.at(0) == s.points.at(3) && s.points.at(1) == s.points.at(4)) {
+   69|      0|            s.error = "error 2";
+   70|      0|        } else if(s.points.at(0) == s.points.at(6) && s.points.at(1) == s.points.at(7)) {
+   71|      0|            s.error = "error 2";
+   72|      0|        } else if(s.points.at(0) == s.points.at(9) && s.points.at(1) == s.points.at(10)) {
+   73|      0|            s.error = "error 2";
+   74|      0|        }
+   75|      0|    } // checked 0,0
+   76|      0|    
+   77|      0|    if(s.points.at(3) == s.points.at(6) && s.points.at(4) == s.points.at(7)) {
+   78|      0|        s.error = "error 2";
+   79|      0|    } else if(s.points.at(3) == s.points.at(9) && s.points.at(4) == s.points.at(10)) {
+   80|      0|        s.error = "error 2";
+   81|      0|    } // check the other three aren't the same
+   82|      0|}
+   83|       |
+   84|       |
+   85|       |// helper method to validate numbers of points
+   86|    831|string validateError1(string& line) {
+   87|    831|    if(line.size() == 0) { // check for blank line or line size
+   88|      0|        return line = "Error 1: Input size.";
+   89|    831|    } else if(!(numberPoints(line))) {
+   90|      0|        return line = "error 1: spaces";
+   91|    831|    } else if(containsLetterOrSymbol(line)) {
+   92|      0|        return line = "error 1: letter";
+   93|      0|    }
+   94|    831|    
+   95|    831|    vector<string> testingPoints = splitString(line);
+   96|    831|    
+   97|    831|    if(outOfRange(testingPoints)) {
+   98|      0|        return line = "error 1: out of range";
+   99|      0|    }
+  100|    831|    
+  101|    831|    return line;
+  102|    831|}
+  103|       |
+  104|      1|vector<string> splitVector(vector<string> in) {
+  105|      1|    vector<string> result;
+  106|    831|    for(string s: in) {
+  107|    831|        if(isalpha(s[0])) {
+  108|      0|            result.push_back(s);
+  109|      0|           // cout << s << endl;
+  110|    831|        } else {
+  111|    831|            istringstream iss(s);
+  112|  5.81k|            for(string s; iss >> s; ) {
+  113|  4.98k|                result.push_back(s);
+  114|  4.98k|               // cout << s << endl;
+  115|  4.98k|            }
+  116|    831|        }
+  117|    831|    }
+  118|      1|    return result;
+  119|      1|}
+  120|       |
+  121|      1|vector<string> readFile(istream& in) {
+  122|      1|    vector<string> fileLines;
+  123|      1|    string line;
+  124|    832|    while(!in.eof()){
+  125|    831|        getline(in, line);
+  126|    831|        validateError1(line);
+  127|    831|        //cout << line << endl;
+  128|    831|        fileLines.push_back(line);
+  129|    831|    }
+  130|      1|    // vector<string> splitPoints = splitVector(fileLines);
+  131|      1|    return fileLines;
+  132|      1|}
+  133|       |
+  134|       |// helper method to print for testing in console
+  135|      0|void printVector(vector<string> input) {
+  136|      0|    for (auto i = input.begin(); i != input.end(); ++i) {
+  137|      0|        cout << *i << endl;
+  138|      0|    }
+  139|      0|}
+  140|       |
+  141|       |//////////////////////////////////////////////////////////////////////
+  142|       |
+  143|       |// function to find the slope of a straight line
+  144|       |
+  145|    831|void stringToDouble(Shape &s, vector<string> positions) {
+  146|    831|    vector<double> points;
+  147|    831|    double x1, y1, x2, y2, x3, y3, x4, y4;
+  148|    831|    x1 = 0.0;
+  149|    831|    y1 = 0.0;
+  150|    831|    x2 = atof(positions.at(0).c_str());
+  151|    831|    y2 = atof(positions.at(1).c_str());
+  152|    831|    x3 = atof(positions.at(2).c_str());
+  153|    831|    y3 = atof(positions.at(3).c_str());
+  154|    831|    x4 = atof(positions.at(4).c_str());
+  155|    831|    y4 = atof(positions.at(5).c_str());
+  156|    831|    
+  157|    831|    s.points.push_back(x1);
+  158|    831|    s.points.push_back(y1);
+  159|    831|    s.points.push_back(x2);
+  160|    831|    s.points.push_back(y2);
+  161|    831|    s.points.push_back(x3);
+  162|    831|    s.points.push_back(y3);
+  163|    831|    s.points.push_back(x4);
+  164|    831|    s.points.push_back(y4);
+  165|    831|
+  166|    831|}
+  167|       |
+  168|  3.32k|float slope(float x1, float y1, float x2, float y2) {
+  169|  3.32k|    return (y2 - y1) / (x2 - x1);
+  170|  3.32k|}
+  171|       |
+  172|    831|bool colinear(Shape s) {
+  173|    831|    if(s.slopes.at(0) == s.slopes.at(1)) {
+  174|      0|        return true;
+  175|    831|    } else if(s.slopes.at(1) == s.slopes.at(2)) {
+  176|      0|        return true;
+  177|    831|    } else if(s.slopes.at(2) == s.slopes.at(3)){
+  178|      0|        return true;
+  179|      0|    }
+  180|    831|    return false;
+  181|    831|}
+  182|       |
+  183|    831|void calculateSlopes(Shape &s) {
+  184|    831|    
+  185|    831|    double x1, y1, x2, y2, x3, y3, x4, y4;
+  186|    831|    
+  187|    831|    x1 = s.points.at(0);
+  188|    831|    y1 = s.points.at(1);
+  189|    831|    x2 = s.points.at(2);
+  190|    831|    y2 = s.points.at(3);
+  191|    831|    x3 = s.points.at(4);
+  192|    831|    y3 = s.points.at(5);
+  193|    831|    x4 = s.points.at(6);
+  194|    831|    y4 = s.points.at(7);
+  195|    831|    
+  196|    831|    double slope1 = slope(x1, y1, x2, y2);
+  197|    831|    double slope2 = slope(x2, y2, x3, y3);
+  198|    831|    double slope3 = slope(x3, y3, x4, y4);
+  199|    831|    double slope4 = slope(x4, y4, x1, y1);
+  200|    831|    
+  201|    831|    s.slopes.push_back(slope1);
+  202|    831|    s.slopes.push_back(slope2);
+  203|    831|    s.slopes.push_back(slope3);
+  204|    831|    s.slopes.push_back(slope4);
+  205|    831|}
+  206|       |
+  207|       |// https://www.geeksforgeeks.org/program-calculate-distance-two-points/
+  208|       |
+  209|  3.32k|float calculateDistance(float x1, float y1, float x2, float y2) {
+  210|  3.32k|    return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));
+  211|  3.32k|}
+  212|       |
+  213|       |
+  214|    831|void calculateSideLength(Shape &s) {
+  215|    831|    double x1, y1, x2, y2, x3, y3, x4, y4;
+  216|    831|    double side1, side2, side3, side4;
+  217|    831|    
+  218|    831|    x1 = s.points.at(0);
+  219|    831|    y1 = s.points.at(1);
+  220|    831|    x2 = s.points.at(2);
+  221|    831|    y2 = s.points.at(3);
+  222|    831|    x3 = s.points.at(4);
+  223|    831|    y3 = s.points.at(5);
+  224|    831|    x4 = s.points.at(6);
+  225|    831|    y4 = s.points.at(7);
+  226|    831|    
+  227|    831|    side1 = calculateDistance(x1, y1, x2, y2);
+  228|    831|    side2 = calculateDistance(x2, y2, x3, y3);
+  229|    831|    side3 = calculateDistance(x3, y3, x4, y4);
+  230|    831|    side4 = calculateDistance(x4, y4, x1, y1);
+  231|    831|    // cout << "sides : " << side1 << " " << side2 << " " << side3 << " " << side4 << endl;
+  232|    831|    
+  233|    831|    s.sides.push_back(side1);
+  234|    831|    s.sides.push_back(side2);
+  235|    831|    s.sides.push_back(side3);
+  236|    831|    s.sides.push_back(side4);
+  237|    831|}
+  238|       |
+  239|       |///////////////////////////////////////////////////////////////////////////// boolean for shapes
+  240|       |
+  241|  5.53k|bool isSquare(const Shape &s) {
+  242|  5.53k|    double firstSide = s.sides.at(0);
+  243|  11.6k|    for(double s: s.sides) {
+  244|  11.6k|        if(s != firstSide) {
+  245|  5.37k|            return false;
+  246|  5.37k|        }
+  247|  11.6k|    }
+  248|  5.53k|    if(s.points.at(1) != s.points.at(3) || s.points.at(2) != s.points.at(4) || s.points.at(5) != s.points.at(7)) {
+  249|    156|        return false;
+  250|    156|    }
+  251|      0|    return true;
+  252|      0|}
+  253|       |
+  254|  1.61k|bool isRectangle(const Shape &s) {
+  255|  1.61k|    if(isSquare(s) == true) {
+  256|      0|        return false;
+  257|      0|    }
+  258|  1.61k|    if(s.points.at(1) != s.points.at(3) || s.points.at(2) != s.points.at(4) || s.points.at(5) != s.points.at(7)) {
+  259|  1.61k|        return false;
+  260|  1.61k|    }
+  261|      0|    if(s.sides.at(0) == s.sides.at(2) && s.sides.at(1) == s.sides.at(3)) {
+  262|      0|        return true;
+  263|      0|    }
+  264|      0|    return false;
+  265|      0|}
+  266|       |
+  267|  1.61k|bool isRhombi(const Shape &s) {
+  268|  1.61k|    if(isSquare(s) == true) {
+  269|      0|        return false;
+  270|      0|    }
+  271|  1.61k|    double sideLength = s.sides.at(0);
+  272|  3.39k|    for(double si: s.sides) {
+  273|  3.39k|        if(si != sideLength) {
+  274|  1.55k|            return false;
+  275|  1.55k|        }
+  276|  3.39k|    }
+  277|  1.61k|    if(s.slopes.at(0) == s.slopes.at(2) && s.slopes.at(1) == s.slopes.at(3)) {
+  278|     52|        return true;
+  279|     52|    }
+  280|      0|    return false;
+  281|      0|}
+  282|       |
+  283|    703|bool isKite(const Shape &s) {
+  284|    703|    if(isSquare(s) == true) {
+  285|      0|        return false;
+  286|    703|    } else if(s.sides.at(0) != s.sides.at(1) && s.sides.at(0) != s.sides.at(3)) {
+  287|    602|        return false;
+  288|    602|    } else if(s.sides.at(0) == s.sides.at(1) && s.sides.at(2) == s.sides.at(3) && s.sides.at(1) != s.sides.at(2)) {
+  289|     33|        return true;
+  290|     68|    } else if(s.sides.at(0) == s.sides.at(3) && s.sides.at(1) == s.sides.at(2) && s.sides.at(3) != s.sides.at(2)) {
+  291|     68|        return true;
+  292|     68|    }
+  293|      0|    return false;
+  294|      0|}
+  295|       |
+  296|    779|bool isPara(const Shape &s) {
+  297|    779|    if(isRectangle(s) == true || isSquare(s) == true || isRhombi(s) == true) {
+  298|      0|        return false;
+  299|      0|    }
+  300|    779|    if(s.slopes.at(0) == s.slopes.at(2) && s.slopes.at(1) == s.slopes.at(3)) {
+  301|     76|        if(s.sides.at(0) == s.sides.at(2) && s.sides.at(1) == s.sides.at(3)) {
+  302|     76|            return true;
+  303|     76|        }
+  304|    703|    }
+  305|    703|    return false;
+  306|    703|}
+  307|       |
+  308|    602|bool isTrap(const Shape &s) {
+  309|    602|    if(s.slopes.at(0) == s.slopes.at(2) && s.slopes.at(1) != s.slopes.at(3)) {
+  310|     47|        return true;
+  311|    555|    } else if (s.slopes.at(0) != s.slopes.at(2) && s.slopes.at(1) == s.slopes.at(3)) {
+  312|     54|        return true;
+  313|     54|    }
+  314|    501|    return false;
+  315|    501|}
+  316|       |
+  317|      1|vector<Shape> makeShapeVector(vector<string> splitBySpace) {
+  318|      1|    vector<Shape> allShapes;
+  319|      1|    int marker = 0;
+  320|    832|    for(int i = 0; i < splitBySpace.size(); i+= 6) {
+  321|    831|        Shape _shape;
+  322|    831|        if(isalpha(splitBySpace.at(i)[0])) {
+  323|      0|            _shape.error = splitBySpace.at(i);
+  324|      0|            i -= 5;
+  325|      0|            allShapes.push_back(_shape);
+  326|    831|        } else {
+  327|    831|            vector<string> holdPoints;
+  328|  5.81k|            for(int j = 0; j < 6; ++j) {
+  329|  4.98k|                marker = i + j;
+  330|  4.98k|                holdPoints.push_back(splitBySpace.at(marker));
+  331|  4.98k|            }
+  332|    831|            stringToDouble(_shape, holdPoints); // points
+  333|    831|            //         cout << "shape points at 0: " << _shape.points.at(4) << endl;
+  334|    831|            calculateSideLength(_shape); // sides
+  335|    831|            //         cout << "shape points at 0: " << _shape.sides.at(3) << endl;
+  336|    831|            calculateSlopes(_shape); // slopes
+  337|    831|            //         cout << "shape points at 0: " << _shape.slopes.at(2) << endl;
+  338|    831|            if(colinear(_shape)) {
+  339|      0|                _shape.error = "error 3";
+  340|      0|            }
+  341|    831|            allShapes.push_back(_shape);
+  342|    831|        }
+  343|    831|    }
+  344|      1|    return allShapes;
+  345|      1|}
+  346|       |
+  347|      1|void printShapes(vector<Shape> &all) {
+  348|      1|    
+  349|    831|    for(Shape s: all) {
+  350|    831|        if(s.error != "") {
+  351|      0|            cout << s.error << endl;
+  352|      0|            EXIT_FAILURE;
+  353|    831|        } else {
+  354|    831|            if (isSquare(s) == true) {
+  355|      0|                cout << "square" << endl;
+  356|    831|            } else if(isRectangle(s) == true) {
+  357|      0|                cout << "rectangle" << endl;
+  358|    831|            } else if(isRhombi(s) == true) {
+  359|     52|                cout << "rhombi" << endl;
+  360|    779|            } else if(isPara(s) == true) {
+  361|     76|                cout << "parallelogram" << endl;
+  362|    703|            } else if(isKite(s) == true) {
+  363|    101|                cout << "kite" << endl;
+  364|    602|            } else if(isTrap(s) == true) {
+  365|    101|                cout << "trapezoid" << endl;
+  366|    501|            } else {
+  367|    501|                cout << "quadrilateral" << endl;
+  368|    501|            }
+  369|    831|        }
+  370|    831|    }
+  371|      1|}
+  372|       |
+  373|       |
+  374|       |////////////////////////////////////////////////////////////////////// main
+  375|       |
+  376|      1|int main(int argc, const char * argv[]) {
+  377|      1|//    ofstream out (argv[2]);
+  378|      1|//    cout.rdbuf(out.rdbuf());
+  379|      1|    //  ifstream in ("testBasic.txt");
+  380|      1|    //  ifstream in ("testgen.txt");
+  381|      1|    //  ifstream in ("randomSquares.txt");
+  382|      1|    //  ifstream in("randomRhombi.txt");
+  383|      1|    //  ifstream in("randomKites.txt");
+  384|      1|    //  ifstream in("randomQuadrilaterals.txt");
+  385|      1|    //  ifstream in("randomTrapezoids.txt");
+  386|      1|    //  ifstream in("randomParallelograms.txt");
+  387|      1|    vector<string> inFile = readFile(std::cin);
+  388|      1|    vector<string> splitBySpace = splitVector(inFile);
+  389|      1|    vector<Shape> allShapes = makeShapeVector(splitBySpace);
+  390|      1|    printShapes(allShapes);
+  391|      1|}
+

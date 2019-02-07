@@ -16,7 +16,7 @@ coverage: main.cpp
 	xcrun llvm-cov show ./main -instr-profile=main.profdata main.cpp > coverage.txt
 
 fuzzer:
-	for run in {1..1000}; do ./fuzz.sh; done
+	for run in {1..1000}; do ./fuzz.sh ./test.sh; done
 
 test: all
 	./test.sh
