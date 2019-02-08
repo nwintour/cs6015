@@ -1,5 +1,0 @@
-1c1
-< error 1
----
-> error 1
-\ No newline at end of file
