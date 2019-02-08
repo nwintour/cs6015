@@ -1,8 +1,13 @@
-./fuzz < small_input.txt > small_output.txt
-./errorOne < small_errorOne.txt > errorOne_output.txt
-./errorTwo < small_errorTwo.txt > errorTwo_output.txt
-./errorThree < small_errorThree.txt > errorThree_output.txt
-./errorFour < small_errorFour.txt > errorFour_output.txt
+./fuzz > small_output.txt
+./tmain < small_output.txt > small_output.txt
+./errorOne > errorOne_output.txt
+./tmain < errorOne_output.txt > errorOne_output.txt
+./errorTwo > errorTwo_output.txt
+./tmain < errorTwo_output.txt > errorTwo_output.txt
+./errorThree > errorThree_output.txt
+./tmain < errorThree_output.txt > errorThree_output.txt
+./errorFour > errorFour_output.txt
+./tmain < errorFour_output.txt > errorFour_output.txt
 diff small_output.txt small_expected.txt > result_small.txt
 diff errorOne_output.txt one_expected.txt > result_one.txt
 diff errorTwo_output.txt two_expected.txt > result_two.txt

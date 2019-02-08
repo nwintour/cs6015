@@ -1,6 +1,6 @@
 //
-//  main.cpp
-//  numberGenerator
+//  fuzz.cpp
+//  fuzz
 //
 //  Created by Natalie Wintour on 2/5/19.
 //  Copyright © 2019 Natalie Wintour. All rights reserved.
@@ -80,22 +80,8 @@ string makeKite() {
     return ret;
 }
 
-string makeFalseError() {
-    string random = makeSquare();
-    vector<string> split = splitString(random);
-    int tran = stoi(split.at(2)) + 1;
-    int tran2 = stoi(split.at(3)) + 1;
-    split.at(2) = to_string(tran);
-    split.at(3) = to_string(tran2);
-    string ret = split.at(0) + ' ' + split.at(1) + ' ' + split.at(2) + ' ' + split.at(3) + ' ' + split.at(4) + ' ' + split.at(5);
-    return ret;
-}
-
 int main(int argc, const char * argv[]) {
- 
-    ofstream out(argv[1]);
-    cout.rdbuf(out.rdbuf());
-    
+   // freopen("small_input.txt","w",stdout);
     string square = makeSquare();
     string rectangle = makeRectangle();
     string rhombus = makeRhombus();

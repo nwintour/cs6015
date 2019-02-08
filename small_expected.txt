@@ -1,0 +1,6 @@
+square
+rectangle
+rhombus
+parallelogram
+trapezoid
+kite
