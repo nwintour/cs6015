@@ -16,6 +16,11 @@ coverage: main.cpp
 	xcrun llvm-cov show ./main -instr-profile=main.profdata main.cpp > coverage.txt
 
 fuzzer:
+	clang++ -std=c++14 fuzz.cpp -o fuzz
+	clang++ -std=c++14 errorOne.cpp -o errorOne
+	clang++ -std=c++14 errorTwo.cpp -o errorTwo
+	clang++ -std=c++14 errorThree.cpp -o errorThree
+	clang++ -std=c++14 errorFour.cpp -o errorFour
 	for run in {1..1000}; do ./fuzz.sh; done
 
 test: all

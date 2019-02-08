@@ -1,6 +1,9 @@
-0a1,6
-> square
-> rectangle
+3,6c3,6
+< quadrilateral
+< quadrilateral
+< quadrilateral
+< kite
+---
 > rhombus
 > parallelogram
 > trapezoid
