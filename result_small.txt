@@ -1,11 +1,8 @@
-3,6c3,6
+3,5c3,5
 < quadrilateral
 < quadrilateral
 < quadrilateral
-< kite
 ---
 > rhombus
 > parallelogram
 > trapezoid
-> kite
-\ No newline at end of file
